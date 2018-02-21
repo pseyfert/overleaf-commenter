@@ -2,12 +2,21 @@
 
 # overleaf-commenter
 
+Use Overleaf discussions on a local text editor.
+
+## background
+
+Overleaf is a cloud based collaborative latex editing tool.  (I.e. have a
+tex(t) editor in the web browser, automatically re-generate the pdf on the
+server and show it in the browser). It's a bit a multi-user compiler-explorer
+for TeX.
+
 Discussions on Overleaf are kept in the document (and thus accessible through
 the git clone) as tex comments.
 
 ![example screenshot](https://i.stack.imgur.com/fV9rJ.png)
 
-The Syntax is (simply by looking at what gets generated:
+The syntax is (simply by looking at what gets generated):
 
 ```tex
 Some regular $T=e \cdot X$ code.
@@ -24,6 +33,10 @@ Some regular $T=e \cdot X$ code.
 ```
 
 I.e. `% *` starts a discussion `% ^.` ends it, and `% ^` is a response.
+
+Overleaf documents can be accessed through git.  One can follow and contribute
+to discussions from a local text editor, provided one gets the syntax right -
+something your computer should be able to do for you in your local text editor.
 
 ## USAGE
 
