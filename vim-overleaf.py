@@ -108,9 +108,9 @@ def vim_main():
     replymode = currenttext[:4] == "% ^."
 
     if replymode:
-        leader = "% ^"
+        leader = "^"
     else:
-        leader = "% *"
+        leader = "*"
 
     mylines = generate_comment(leader)
 
