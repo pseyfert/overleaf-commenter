@@ -8,7 +8,7 @@ python:
 before_install:
     - sudo apt-get -qq update
     - sudo apt-get install -y git
-    - pip install flake8 python_dateutil
+    - pip install flake8 python_dateutil nose2
 script:
     - flake8 overleaf_comment.py
     - nose2
