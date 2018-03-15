@@ -1,4 +1,6 @@
 [![Licence: AGPL v3](https://img.shields.io/github/license/pseyfert/overleaf-commenter.svg)](LICENSE)
+[![Build Status](https://travis-ci.org/pseyfert/overleaf-commenter.svg?branch=master)](https://travis-ci.org/pseyfert/overleaf-commenter)
+
 
 # overleaf-commenter
 
