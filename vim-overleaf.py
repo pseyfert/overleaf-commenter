@@ -36,7 +36,12 @@ e.g. in .vimrc define
 function! OverleafComment()
   py3f /path/to/overleaf-commenter/vim-overleaf.py
 endfunc
-
+function! OverleafCloseDiscussion()
+  py3 import sys
+  py3 sys.argv.append('--close')
+  py3f /path/to/overleaf-commenter/vim-overleaf.py
+  py3 sys.argv.pop()
+endfunc
 ```
 '''
 
@@ -48,7 +53,7 @@ import datetime
 import pytz
 
 
-def close_discussion():
+def close_discussion(leader='^'):
     """ close_discussion
     Generates a string to close a discussion.
 
@@ -58,8 +63,22 @@ def close_discussion():
     The time at calling the function is used for the timestamp of closing the
     discussion.
 
+    Args:
+
+        leader: string that will mostly be ignored (use same interface as
+                generate_comment). Except, if the leader is '*' an exception
+                is raised.
+
     Returns: list of strings (one element for the one line)
+
+    Raises: AssertionError when called from vim and not from the last line of
+            a discussion (identified through the leader argument).
+
     """
+    if leader == '*':
+        raise AssertionError("Can only close discussion from the last line of"
+                             " a discussion.")
+
     mylines = [
                "% ^ <{}> {}Z.".format(subprocess.check_output(["git",
                                                                "config",
@@ -119,6 +138,30 @@ def generate_comment(leader='*^'):
     return mylines
 
 
+def get_line_function():
+    """get_line_function
+    Parse arguments to decide if a discussion should be closed or if a regular
+    comment will be posted
+
+    Returns: a function which has a leader (string) argument and returns a list
+             of strings (the comment for the tex document).
+
+    """
+
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--close",
+                        help="generate string to close a discussion",
+                        action="store_true")
+    args = parser.parse_args()
+    if args.close:
+        line_function = close_discussion
+    else:
+        line_function = generate_comment
+
+    return line_function
+
+
 def vim_main():
     """vim_main
     Main routine to add an overleaf comment to a document from vim.
@@ -140,14 +183,22 @@ def vim_main():
     else:
         leader = "*"
 
-    mylines = generate_comment(leader)
+    # 0 element in CLI will be filename of this script. In VIM it could be
+    # anything. Possibly ['/must>not&exist/foo']
+    try:
+        line_function = get_line_function()
+    except SystemExit:
+        # argument parsing failed
+        line_function = generate_comment
+    mylines = line_function(leader)
 
     if replymode:
         vim.current.buffer[currentline-1:currentline] = mylines
     else:
         vim.current.buffer[currentline:currentline] = mylines
 
-    vim.eval('cursor({},3)'.format(currentline+3))
+    if len(mylines) > 1:
+        vim.eval('cursor({},3)'.format(currentline+3))
 
 
 def cli_main():
@@ -157,16 +208,8 @@ def cli_main():
     In case the overleaf-commenter is called from the command line, the comment
     string will get printed to stdout without special editor features.
     """
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--close",
-                        help="generate string to close a discussion",
-                        action="store_true")
-    args = parser.parse_args()
-    if args.close:
-        line_function = close_discussion
-    else:
-        line_function = generate_comment
+
+    line_function = get_line_function()
 
     for line in line_function():
         print(line)
@@ -179,4 +222,7 @@ except ImportError:
     make_overleaf = cli_main
 
 if __name__ == '__main__':
-    make_overleaf()
+    try:
+        make_overleaf()
+    except Exception as e:
+        print(e)
