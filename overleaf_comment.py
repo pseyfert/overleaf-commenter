@@ -34,12 +34,12 @@ USAGE:
 e.g. in .vimrc define
 ```
 function! OverleafComment()
-  py3f /path/to/overleaf-commenter/vim-overleaf.py
+  py3f /path/to/overleaf-commenter/overleaf_comment.py
 endfunc
 function! OverleafCloseDiscussion()
   py3 import sys
   py3 sys.argv.append('--close')
-  py3f /path/to/overleaf-commenter/vim-overleaf.py
+  py3f /path/to/overleaf-commenter/overleaf_comment.py
   py3 sys.argv.pop()
 endfunc
 ```

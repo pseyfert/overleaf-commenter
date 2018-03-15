@@ -43,7 +43,7 @@ something your computer should be able to do for you in your local text editor.
 ### overleaf-commenter can be called from the command line:
 
 ```sh
-> python vim-overleaf.py
+> python overleaf_comment.py
 
 % *^ <email@server.tld> 2018-02-21T07:31:12.752395Z:
 %
@@ -52,7 +52,11 @@ something your computer should be able to do for you in your local text editor.
 % ^.
 ```
 
-You then should pick `^` or `*` and write the comment. `python` may be python2 or python3.
+You then should pick `^` or `*` and write the comment. `python` may be python2
+or python3.
+
+`overleaf_comment.py` has the command line option `--close` to generate the
+string that closes a discussion.
 
 ### overleaf-commenter can be called from vim
 
@@ -60,20 +64,34 @@ Add to the `.vimrc` a definition
 
 ```viml
 function! OverleafComment()
-  py3f /path/to/overleaf-commenter/vim-overleaf.py
+  py3f /path/to/overleaf-commenter/overleaf_comment.py
 endfunc
 ```
 
 or
 
 ```viml
-map <C-O> py3f /path/to/overleaf-commenter/vim-overleaf.py
+map <C-O> py3f /path/to/overleaf-commenter/overleaf_comment.py
 ```
+
+NB: depending on the python support of your vim installation, try `pyf` instead of `py3f`.
 
 The vim functionality has a bit of heuristics to determine if a reply is
 requested or a new comment will be started. The comment will be inserted
 between the current cursor's line and the next line. The distinction is based
 on the current line (comparison to `$ ^.`).
+
+When the cursor is on the ending line of a discussion, one can as well close a discussion:
+
+```viml
+py3 import sys
+py3 sys.argv.append("--close")
+py3f /path/to/overleaf-commenter/overleaf_comment.py
+py3 sys.argv.pop()
+```
+
+This mimics the CLI call with `--close`. It will print an error when the cursor
+is not on the ending line of a discussion.
 
 ## What can/can't go into the comment syntax
 

@@ -1,0 +1,13 @@
+# copyright 2018 CERN for the benefit of the LHCb collaboration (see LICENSE)
+
+language: python
+python:
+    - "2.7"
+    - "3.5"
+    - "3.6"
+before_install:
+    - apt-get install git
+    - pip install flake8 python_dateutil
+script:
+    - flake8 overleaf_comment.py
+    - nose2
