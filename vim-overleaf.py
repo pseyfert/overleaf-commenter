@@ -48,6 +48,34 @@ import datetime
 import pytz
 
 
+def close_discussion():
+    """ close_discussion
+    Generates a string to close a discussion.
+
+    It assumes execution in the overleaf document's git repository (for email
+    address lookup).
+
+    The time at calling the function is used for the timestamp of closing the
+    discussion.
+
+    Returns: list of strings (one element for the one line)
+    """
+    mylines = [
+               "% ^ <{}> {}Z.".format(subprocess.check_output(["git",
+                                                               "config",
+                                                               "--get",
+                                                               "user.email"]
+                                                              )[:-1].decode(),
+                                      datetime
+                                      .datetime
+                                      .now(tz=pytz.utc)
+                                      .replace(tzinfo=None)
+                                      .isoformat()
+                                      ),
+    ]
+    return mylines
+
+
 def generate_comment(leader='*^'):
     """ generate_comment
     Generates an almost empty overleaf comment.
@@ -129,7 +157,18 @@ def cli_main():
     In case the overleaf-commenter is called from the command line, the comment
     string will get printed to stdout without special editor features.
     """
-    for line in generate_comment():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--close",
+                        help="generate string to close a discussion",
+                        action="store_true")
+    args = parser.parse_args()
+    if args.close:
+        line_function = close_discussion
+    else:
+        line_function = generate_comment
+
+    for line in line_function():
         print(line)
 
 
