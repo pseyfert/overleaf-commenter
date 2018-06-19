@@ -109,4 +109,4 @@ Trying around:
 
 ## Behind the scenes
 
- - overleaf-commenter obtains the email address through git. (Since the git commit email address and the accouunt on overleaf are independent, this might actually be wrong)
+ - overleaf-commenter obtains the email address through git. (Since the git commit email address and the account on overleaf are independent, this might actually be wrong)
