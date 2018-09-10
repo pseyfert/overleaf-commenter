@@ -1,0 +1,3 @@
+filetype plugin on
+set rtp+=.
+let g:tex_flavor='latex'

@@ -2,14 +2,35 @@
 
 language: python
 python:
-    - "2.7"
-    - "3.5"
     - "3.6"
+    - "3.5"
+    - "2.7"
 before_install:
     - sudo apt-get -qq update
-    - sudo apt-get install -y git
-    - pip install -r requirements.txt
+    - sudo apt-get install -y git vim
+    - sudo pip install -r requirements.txt
     - pip install flake8 python_dateutil nose2
 script:
-    - flake8 overleaf_comment.py
     - nose2
+
+jobs:
+  include:
+    - stage: lint
+      script: 
+        - flake8 overleaf_comment.py
+    - stage: vimtest
+      # vim is built with python2 support
+      python: 2.7
+      script:
+        - git config user.email tester@testserver.org
+        - cd test
+        - cp original.tex example.tex
+        - cd ..
+        - vim -Nu test/vimrc -s test/script.vim test/example.tex
+        - cd test
+        - python diffpass.py
+
+stages:
+    - lint
+    - test
+    - vimtest
