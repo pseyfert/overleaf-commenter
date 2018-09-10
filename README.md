@@ -53,7 +53,7 @@ Simply call
 or
 
 ```viml
-:overleafCloseDiscussion
+:OverleafCloseDiscussion
 ```
 
 (see below for install suggestions)
