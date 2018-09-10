@@ -42,6 +42,22 @@ something your computer should be able to do for you in your local text editor.
 
 ## USAGE
 
+### as vim plugin
+
+Simply call
+
+```viml
+:OverleafComment
+```
+
+or
+
+```viml
+:OverleafCloseDiscussion
+```
+
+(see below for install suggestions)
+
 ### overleaf-commenter can be called from the command line:
 
 ```sh
@@ -60,20 +76,13 @@ or python3.
 `overleaf_comment.py` has the command line option `--close` to generate the
 string that closes a discussion.
 
-### overleaf-commenter can be called from vim
+### overleaf-commenter can be called manually from vim
 
-Add to the `.vimrc` a definition
+You can also manually do what the vim plugin does.
 
+To insert a comment call
 ```viml
-function! OverleafComment()
-  py3f /path/to/overleaf-commenter/overleaf_comment.py
-endfunc
-```
-
-or
-
-```viml
-map <C-O> py3f /path/to/overleaf-commenter/overleaf_comment.py
+:py3f /path/to/overleaf-commenter/overleaf_comment.py
 ```
 
 NB: depending on the python support of your vim installation, try `pyf` instead of `py3f`.
@@ -94,6 +103,21 @@ py3 sys.argv.pop()
 
 This mimics the CLI call with `--close`. It will print an error when the cursor
 is not on the ending line of a discussion.
+
+## INSTALL
+
+Just use your favourite internet search engine to figure out how you want to manage vim plugins. It may boil down to:
+
+ * (pathogen)
+```sh
+cd ~/.vim/bundle
+git clone https://github.com/pseyfert/overleaf-commenter
+```
+
+ * (vundle)
+```viml
+Plugin 'pseyfert/overleaf-commenter'
+```
 
 ## What can/can't go into the comment syntax
 
