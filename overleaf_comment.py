@@ -198,7 +198,10 @@ def vim_main():
         vim.current.buffer[currentline:currentline] = mylines
 
     if len(mylines) > 1:
-        vim.eval('cursor({},3)'.format(currentline+3))
+        if replymode:
+            vim.eval('cursor({},3)'.format(currentline+2))
+        else:
+            vim.eval('cursor({},3)'.format(currentline+3))
 
 
 def cli_main():
