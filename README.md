@@ -2,9 +2,17 @@
 [![Build Status](https://travis-ci.org/pseyfert/overleaf-commenter.svg?branch=master)](https://travis-ci.org/pseyfert/overleaf-commenter)
 
 
-# overleaf-commenter
+# overleaf-commenter (for overleaf v1)
 
 Use Overleaf discussions on a local text editor.
+
+## deprecated!
+
+This tool is for overleaf v1. As far as I know overleaf altered its support
+for local editors and moved discussions completely to the cloud and made
+them inaccessible to local clients. I did not investigate if they can be
+accessed through any restful API, but even if, this plugin is completely
+obsolete with overleaf v2.
 
 ## background
 
